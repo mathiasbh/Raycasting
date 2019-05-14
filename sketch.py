@@ -5,8 +5,7 @@ from boundary import Boundary
 from particle import Particle
 
 
-xoff = 0
-yoff = 10000
+off = 10
 width = 800
 height = 800
 size = [width, height]
@@ -22,12 +21,18 @@ def setup():
 
 	walls = []
 
-	for w in range(0, 5):
+	for w in range(0, 6):
 		x1 = randint(0, width)
 		x2 = randint(0, width)
 		y1 = randint(0, height)
 		y2 = randint(0, height)
 		walls.append(Boundary(screen, x1, y1, x2, y2))
+
+	# Build outer edge walls
+	walls.append(Boundary(screen, off, off, off, height-off))
+	walls.append(Boundary(screen, off, off, width-off, off))
+	walls.append(Boundary(screen, width-off, off, width-off, height-off))
+	walls.append(Boundary(screen, off, height-off, width-off, height-off))
 
 	particle = Particle(screen, width, height)
 	return(walls, particle)
@@ -47,11 +52,10 @@ def draw():
 		screen.fill((0,0,0))
 
 		for event in pygame.event.get():
-			if event.type == pygame.key.get_pressed()[pygame.K_q]:
-				print("HELLO, q pressed")
-				#pygame.quit()
-				#sys.exit()
-				#print(event)
+			if pygame.key.get_pressed()[pygame.K_q]:
+				pygame.quit()
+				sys.exit()
+
 
 		for wall in walls:
 			wall.show()
@@ -59,11 +63,9 @@ def draw():
 		# Move particle with mouse
 		mousepos = pygame.mouse.get_pos()
 		particle.update(mousepos[0], mousepos[1])
-		particle.show()
-
-
-
 		
+		particle.show()
+		particle.look(walls)
 
 		# Update game
 		pygame.display.update()
