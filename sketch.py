@@ -63,7 +63,7 @@ def draw():
 		# Move particle with mouse
 		mousepos = pygame.mouse.get_pos()
 		particle.update(mousepos[0], mousepos[1])
-		
+
 		particle.show()
 		particle.look(walls)
 
