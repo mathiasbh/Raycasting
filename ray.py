@@ -4,23 +4,26 @@ from numpy import cos,sin
 class Ray(object):
 	"""docstring for Ray"""
 
-	def __init__(self, screen, pos, angle):
+	def __init__(self, screen, pos, dir):
 		self.screen = screen
 		self.pos = pos
-		self.angle = angle
+		self.dir = dir
 
 
-	def update(self, x, y):
+	def updatePos(self, x, y):
 		self.pos = [x, y]
 
 
+	def updateDir(self, angle):
+		self.dir += angle
+
 
 	def show(self):
-		ray_length = 10
+		ray_length = 5
 
-		line(self.screen, (255,255,0), 
+		line(self.screen, (255,255,255), 
 			  (self.pos[0], self.pos[1]), 
-			  (self.pos[0] + ray_length*cos(self.angle), self.pos[1] + ray_length*sin(self.angle)), 1)
+			  (self.pos[0] + ray_length*cos(self.dir), self.pos[1] + ray_length*sin(self.dir)), 1)
 		
 		
 
@@ -36,12 +39,11 @@ class Ray(object):
 		# Ray coodinates (second line)
 		x3 = self.pos[0]
 		y3 = self.pos[1]
-		x4 = self.pos[0] + cos(self.angle) * 500
-		y4 = self.pos[1] + sin(self.angle) * 500
+		x4 = self.pos[0] + cos(self.dir) * 500
+		y4 = self.pos[1] + sin(self.dir) * 500
 
 		den = (x1 - x2)*(y3 - y4) - (y1 - y2)*(x3 - x4)
-		if den == 0:
-			# Parallel lines
+		if den == 0:  # Parallel lines
 			return
 
 		t = ((x1 - x3)*(y3 - y4) - (y1 - y3)*(x3 - x4)) / den
